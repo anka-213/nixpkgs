@@ -25966,7 +25966,7 @@ with pkgs;
   ### DEVELOPMENT / LIBRARIES / AGDA
 
   agdaPackages = callPackage ./agda-packages.nix {
-    inherit (haskellPackages) Agda;
+    Agda = haskellPackages.Agda.bin;
   };
   agda = agdaPackages.agda;
 

@@ -1119,7 +1119,7 @@ self: super: builtins.intersectAttrs super {
   # Enable extra optimisations which increase build time, but also
   # later compiler performance, so we should do this for user's benefit.
   # Flag added in Agda 2.6.2
-  Agda = appendConfigureFlag "-foptimise-heavily" super.Agda;
+  Agda = enableSeparateBinOutput (appendConfigureFlag "-foptimise-heavily" super.Agda);
 
   # ats-format uses cli-setup in Setup.hs which is quite happy to write
   # to arbitrary files in $HOME. This doesn't either not achieve anything
