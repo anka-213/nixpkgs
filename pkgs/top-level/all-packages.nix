@@ -33076,7 +33076,10 @@ with pkgs;
 
   imgp = python3Packages.callPackage ../applications/graphics/imgp { };
 
-  imhex = callPackage ../applications/editors/imhex { };
+  imhex = callPackage ../applications/editors/imhex {
+    stdenv = gcc12Stdenv;
+    inherit (darwin.apple_sdk.frameworks) CoreFoundation ApplicationServices Foundation Cocoa CoreAudio AppKit;
+  };
 
   inframap = callPackage ../applications/networking/cluster/inframap { };
 

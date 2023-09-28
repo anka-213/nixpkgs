@@ -1,5 +1,14 @@
 { lib
 , stdenv
+, gcc12
+, freetype
+, CoreFoundation
+, ApplicationServices
+, Foundation
+, Cocoa
+, CoreAudio
+, AppKit
+, ninja
 , cmake
 , llvm
 , fetchFromGitHub
@@ -20,6 +29,7 @@
 , yara
 , rsync
 }:
+# gcc@12 ninja
 
 let
   version = "1.30.1";
@@ -44,21 +54,29 @@ stdenv.mkDerivation rec {
     hash = "sha256-3s9Dgdhl+k2KjMoSHNl59YOoCEwqK+37DOzKdGP88/4=";
   };
 
-  nativeBuildInputs = [ cmake llvm python3 perl pkg-config rsync ];
+  nativeBuildInputs = [ cmake llvm python3 perl pkg-config rsync ninja ];
 
   buildInputs = [
     capstone
     curl
     dbus
-    file
+    file # libmagic
     fmt_8
     glfw3
-    gtk3
+    freetype
+    # gtk3
     jansson
-    libGLU
+    # libGLU
     mbedtls
     nlohmann_json
     yara
+  ] ++ lib.optionals stdenv.isDarwin [
+    CoreFoundation
+    ApplicationServices
+    Foundation
+    Cocoa
+    CoreAudio
+    AppKit
   ];
 
   cmakeFlags = [
@@ -82,6 +100,6 @@ stdenv.mkDerivation rec {
     homepage = "https://github.com/WerWolv/ImHex";
     license = with licenses; [ gpl2Only ];
     maintainers = with maintainers; [ luis kashw2 ];
-    platforms = platforms.linux;
+    platforms = platforms.unix;
   };
 }
