@@ -33079,6 +33079,7 @@ with pkgs;
   imhex = callPackage ../applications/editors/imhex {
     stdenv = gcc12Stdenv;
     # stdenv = stdenvNoCC;
+    fmt_8 = fmt_8.override { stdenv = gcc12Stdenv;};
     llvm = llvm_14;
     inherit (darwin.apple_sdk.frameworks) CoreFoundation ApplicationServices Foundation Cocoa CoreAudio AppKit;
   };
