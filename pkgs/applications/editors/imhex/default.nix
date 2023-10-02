@@ -55,12 +55,19 @@ stdenv.mkDerivation rec {
     hash = "sha256-3s9Dgdhl+k2KjMoSHNl59YOoCEwqK+37DOzKdGP88/4=";
   };
 
-  nativeBuildInputs = [ cmake llvm python3 perl pkg-config rsync ninja clang_14 ];
+  nativeBuildInputs = [ cmake llvm python3 perl pkg-config ninja rsync clang_14 ];
+  # nativeBuildInputs = [ cmake llvm python3 perl pkg-config rsync ninja gcc12 clang_14 ];
   # nativeBuildInputs = [ cmake llvm python3 perl pkg-config rsync ninja clang_14 ];
-  # CC = "";
-  OBJC = "clang";
-  OBJCXX = "clang++";
-  AS = "${clang_14}/bin/cc";
+  # https://github.com/WerWolv/ImHex/blob/master/.github/workflows/build.yml#L209-L214
+  CC = "${gcc12}/bin/gcc";
+  CXX = "${gcc12}/bin/g++";
+  OBJC = "${clang_14}/bin/clang";
+  OBJCXX = "${clang_14}/bin/clang++";
+  # CC = "gcc-12";
+  # CXX = "g++-12";
+  # OBJC = "clang";
+  # OBJCXX = "clang++";
+  # AS = "${clang_14}/bin/cc";
 
   buildInputs = [
     capstone
@@ -70,6 +77,7 @@ stdenv.mkDerivation rec {
     fmt_8
     glfw3
     freetype
+    llvm
     # gtk3
     jansson
     # libGLU
@@ -89,8 +97,8 @@ stdenv.mkDerivation rec {
     "-DIMHEX_OFFLINE_BUILD=ON"
     "-DUSE_SYSTEM_CAPSTONE=ON"
     "-DUSE_SYSTEM_CURL=ON"
-    "-DUSE_SYSTEM_FMT=ON"
-    "-DUSE_SYSTEM_LLVM=ON"
+    "-DUSE_SYSTEM_FMT=OFF"
+    "-DUSE_SYSTEM_LLVM=OFF"
     "-DUSE_SYSTEM_NLOHMANN_JSON=ON"
     "-DUSE_SYSTEM_YARA=ON"
   ];
