@@ -1,6 +1,7 @@
 { lib
 , stdenv
 , gcc12
+, clang_14
 , freetype
 , CoreFoundation
 , ApplicationServices
@@ -54,7 +55,12 @@ stdenv.mkDerivation rec {
     hash = "sha256-3s9Dgdhl+k2KjMoSHNl59YOoCEwqK+37DOzKdGP88/4=";
   };
 
-  nativeBuildInputs = [ cmake llvm python3 perl pkg-config rsync ninja ];
+  nativeBuildInputs = [ cmake llvm python3 perl pkg-config rsync ninja clang_14 ];
+  # nativeBuildInputs = [ cmake llvm python3 perl pkg-config rsync ninja clang_14 ];
+  # CC = "";
+  OBJC = "clang";
+  OBJCXX = "clang++";
+  AS = "${clang_14}/bin/cc";
 
   buildInputs = [
     capstone
