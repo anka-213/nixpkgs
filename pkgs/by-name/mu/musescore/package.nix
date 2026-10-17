@@ -150,6 +150,17 @@ stdenv.mkDerivation (finalAttrs: {
     qt6.qtwayland
   ];
 
+  # Qt 6.12's qmlcachegen output refers to QQmlPrivate::AOTLookupValidation::Type
+  # unqualified, which is ambiguous when a unity build puts it next to QML module
+  # sources with `using namespace muse::extensions;` (muse::extensions::Type).
+  # Build the QML module targets without unity.
+  postPatch = ''
+    substituteInPlace src/framework/cmake/MuseCreateModule.cmake \
+      --replace-fail \
+        'muse_create_module(''${target_name} ''${arg_UNPARSED_ARGUMENTS})' \
+        'muse_create_module(''${target_name} NO_UNITY ''${arg_UNPARSED_ARGUMENTS})'
+  '';
+
   # Put the default, `$prefix/lib` directory to look for ffmpeg shared objects,
   # Nixpkgs' provided ffmpeg, for both MacOS & Linux. Note that upstream uses
   # the /usr/lib/x86_64-linux-gnu location for any Linux (e.g aarch64 too).
